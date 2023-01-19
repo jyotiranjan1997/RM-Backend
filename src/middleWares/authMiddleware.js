@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const saltRounds = JSON.parse(process.env.salt);
 const { User } = require("../models/userModel");
-
+const privateKey = process.env.secret_key;
 // To store password in hash format
 
 const authMiddleWare = async (req, res, next) => {
@@ -49,4 +49,19 @@ const authLoginMiddleWare = async (req, res, next) => {
   }
 };
 
-module.exports = { authMiddleWare, authLoginMiddleWare };
+const authValidator = (req, res, next) => {
+  const { auth } = req.headers;
+
+  jwt.verify(auth, privateKey, function (err, decoded) {
+    if (err) {
+      res.status(500).send({ msg: "something went wrong" });
+    }
+
+    if (decoded) {
+      req.body.user_id = decoded.user._id;
+      next();
+    }
+  });
+};
+
+module.exports = { authMiddleWare, authLoginMiddleWare, authValidator };

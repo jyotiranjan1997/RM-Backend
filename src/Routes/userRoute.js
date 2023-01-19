@@ -8,7 +8,7 @@ const {
 } = require("../middleWares/authMiddleware");
 const privateKey = process.env.secret_key;
 
-// For Sign-up ROuter
+// For Sign-up Router
 
 userRoute.post("/signup", authMiddleWare, async (req, res) => {
   const { email, password } = req.body;
