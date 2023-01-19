@@ -5,10 +5,13 @@ const { User } = require("../models/userModel");
 
 // To store password in hash format
 
-const authMiddleWare = (req, res, next) => {
-  const { password } = req.body;
-
-  bcrypt.hash(password, saltRounds, function (err, hash) {
+const authMiddleWare = async(req, res, next) => {
+  const { email,password } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
+    res.status(500).send("user Alredy Presnt with this mail Id")
+  } else {
+     bcrypt.hash(password, saltRounds, function (err, hash) {
     // Store hash in your password DB.
     if (err) {
       res.status(500).send("something went wrong to store password");
@@ -19,6 +22,8 @@ const authMiddleWare = (req, res, next) => {
       next();
     }
   });
+  }
+ 
 };
 
 //Verify password hash with the actual password
