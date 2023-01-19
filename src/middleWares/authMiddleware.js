@@ -38,7 +38,7 @@ const authLoginMiddleWare = async (req, res, next) => {
       }
 
       if (result) {
-        req.user = user;
+        req.body.user = user;
         next();
       } else {
         res.status(200).send({ msg: "Invalid Credentials" });
@@ -51,17 +51,17 @@ const authLoginMiddleWare = async (req, res, next) => {
 
 const authValidator = (req, res, next) => {
   const { auth } = req.headers;
+  console.log(auth);
+  console.log(req.body)
 
-  jwt.verify(auth, privateKey, function (err, decoded) {
-    if (err) {
-      res.status(500).send({ msg: "something went wrong" });
-    }
-
+  var decoded = jwt.verify(auth, privateKey);
+  
     if (decoded) {
+      
       req.body.user_id = decoded.user._id;
       next();
     }
-  });
+ 
 };
 
 module.exports = { authMiddleWare, authLoginMiddleWare, authValidator };

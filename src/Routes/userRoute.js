@@ -25,6 +25,7 @@ userRoute.post("/signup", authMiddleWare, async (req, res) => {
 
 userRoute.post("/login", authLoginMiddleWare, async (req, res) => {
   const { user } = req.body;
+  console.log(user)
   try {
     jwt.sign({ user }, privateKey, function (err, token) {
       if (err) {

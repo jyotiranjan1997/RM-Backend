@@ -18,7 +18,7 @@ severityRouter.get("/", authValidator, async (req, res) => {
   const { user_id } = req.body;
 
   try {
-    let severity = await Severity.create({ user_id });
+    let severity = await Severity.find({ user_id });
     res.status(200).send({ msg: "severity Created Successfully!", severity });
   } catch (err) {
     res.status(500).send({ msg: "Failed to send severity" });
