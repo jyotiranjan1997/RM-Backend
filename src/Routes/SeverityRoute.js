@@ -15,10 +15,10 @@ severityRouter.post("/", authValidator, async (req, res) => {
 });
 
 severityRouter.get("/", authValidator, async (req, res) => {
-  const { user_id } = req.body;
+  const { user_id,name } = req.body;
 
   try {
-    let severity = await Severity.find({ user_id });
+    let severity = await Severity.find({ user_id,name });
     res.status(200).send({ msg: "severity Created Successfully!", severity });
   } catch (err) {
     res.status(500).send({ msg: "Failed to send severity" });
