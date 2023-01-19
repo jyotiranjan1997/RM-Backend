@@ -14,8 +14,9 @@ severityRouter.post("/", authValidator, async (req, res) => {
   }
 });
 
-severityRouter.get("/", authValidator, async (req, res) => {
-  const { user_id,name } = req.body;
+severityRouter.get("/:name", authValidator, async (req, res) => {
+    const { user_id } = req.body;
+    const { name } = req.params;
 
   try {
     let severity = await Severity.find({ user_id,name });
